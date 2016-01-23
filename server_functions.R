@@ -1,4 +1,4 @@
-
+require(reshape)
 require(shiny)
 require(RMySQL)
 require(dplyr)
@@ -193,10 +193,6 @@ getTimeBetweenStations <- function(full_df, route, dir, start_station, end_stati
     mutate(time_in_transit = as.numeric(arrival - station_leave_time)) %>% 
     group_by(full_id) %>% 
     arrange(timeFeed, enroute_conf)
-  
-  
-  
-  
   
 }
 

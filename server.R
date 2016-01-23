@@ -62,6 +62,20 @@ shinyServer(function(input, output, session) {
 
   })
   
+  output$tbl_time_to_stop <- renderDataTable({
+    getTimeBetweenStations(full_df = full_table,
+                          route = input$route_sel,
+                          dir = input$dir_sel,
+                          start_station = input$starting_stop,
+                          end_station = input$ending_stop) %>%
+    filter(stop_id ==input$ending_stop,
+           time_in_transit >0 ) %>%
+    mutate(dayT = dayType(station_leave_time))  %>% 
+    group_by(route_id, dayT,`hour` = hour(station_leave_time)) %>% 
+    summarise(`med` = median(time_in_transit/60)) %>%
+      cast(dayT+hour~route_id, mean)
+  })
+  
   
   
   output$travel_time <- renderDataTable({
